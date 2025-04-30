@@ -11,8 +11,4 @@
   <p class="mb-4">Upload a .nii or .nii.gz file to visualize it:</p> 
 
   <NiivueViewer />
-
-  <footer class="mt-8 text-center text-gray-500 text-xs"> 
-    <p>Built with SvelteKit and NiiVue</p>
-  </footer>
 </main>
