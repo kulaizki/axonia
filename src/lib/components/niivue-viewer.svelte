@@ -8,7 +8,15 @@
   let isLoading = false;
   let errorMessage = '';
   let currentFile: string | null = null;
-  let sliceType = 3; // Default set to 3 (Multiplanar)
+  let sliceType = 3;
+
+  // --- Colormap State ---
+  let selectedColormap = 'inferno'; 
+  const availableColormaps = [ 
+    'grayscale', 'negative', 'viridis', 'plasma', 'magma', 'inferno',
+    'hot', 'cool', 'bone', 'pink', 'jet', 'hsv',
+    'spring', 'summer', 'autumn', 'winter', 'surface'
+  ];
 
   onMount(() => {
     try {
@@ -41,9 +49,7 @@
 
   async function handleFileUpload(event: Event) {
     const input = event.target as HTMLInputElement;
-    if (!input.files || input.files.length === 0) {
-      return;
-    }
+    if (!input.files || input.files.length === 0) return;
     if (!nv) {
       errorMessage = "NiiVue viewer is not ready. Please wait or refresh.";
       console.error(errorMessage);
@@ -54,7 +60,6 @@
     isLoading = true;
     errorMessage = '';
     currentFile = file.name;
-
     console.log(`File selected: Name: ${file.name}, Size: ${file.size}, Type: ${file.type || 'N/A'}`);
 
     try {
@@ -62,28 +67,38 @@
       await nv.loadFromFile(file);
       console.log("Successfully loaded file:", file.name);
       if (fileInput) fileInput.value = '';
-      updateSliceType(); // Apply the default slice type (now Multiplanar)
+
+      updateSliceType(); 
+      applyColormap(); 
+
     } catch (error) {
       console.error(`Error loading file "${file.name}":`, error);
       if (error instanceof Error) {
-        if (error.message.toLowerCase().includes('decompress') || error.message.toLowerCase().includes('gzip')) {
-             errorMessage = `Error decompressing file. Ensure it's valid. (Details in console)`;
-        } else if (error.message.toLowerCase().includes('buffer') || error.message.toLowerCase().includes('read')) {
-             errorMessage = `Error reading file. It might be corrupted/too large. (Details in console)`;
-        } else {
-            errorMessage = `Failed to load file: ${error.message}. (Details in console)`;
-        }
-        console.error("Error Name:", error.name);
-        console.error("Error Stack:", error.stack);
+        errorMessage = `Failed to load: ${error.message}. Check console.`;
       } else {
-        errorMessage = 'An unexpected error occurred while loading the file. Check console for details.';
-        console.error("Caught non-Error object:", error);
+        errorMessage = 'An unexpected error occurred. Check console.';
       }
       currentFile = null;
     } finally {
       isLoading = false;
       console.log("File loading attempt finished.");
     }
+  }
+
+  // --- Colormap Application Logic ---
+  function applyColormap() {
+      if (!nv || !nv.volumes || nv.volumes.length === 0) {
+          console.warn("Cannot apply colormap: Niivue not ready or no volume loaded.");
+          return;
+      }
+      try {
+          console.log(`Applying colormap: ${selectedColormap}`);
+          nv.volumes[0].colormap = selectedColormap;
+          nv.updateGLVolume(); 
+      } catch (e) {
+          console.error("Error applying colormap:", e);
+          errorMessage = "Failed to apply colormap.";
+      }
   }
 
   function updateSliceType() {
@@ -95,6 +110,7 @@
                             ? (nv as any).sliceTypeMultiplanar
                             : 3;
     try {
+        console.log(`Setting slice type to: ${sliceType === 3 ? 'Multiplanar (' + multiplanarType + ')' : sliceType}`);
         if (sliceType === 3) {
             nv.setSliceType(multiplanarType);
         } else {
@@ -119,9 +135,16 @@
     }
   }
 
+   function handleColormapChange() {
+       if (nv) {
+           applyColormap();
+       }
+   }
+
   function resetView() {
     if (nv) {
       try {
+        console.log("Resetting view with nv.setDefaults()");
         nv.setDefaults();
       } catch(e) {
         console.error("Error calling nv.setDefaults():", e);
@@ -135,7 +158,7 @@
 
 <div class="flex flex-col w-full max-w-6xl mx-auto p-4 space-y-4">
 
-  <div class="flex flex-wrap gap-4 justify-between items-center border-b pb-4 border-gray-200">
+  <div class="flex flex-wrap gap-x-6 gap-y-4 justify-between items-center border-b pb-4 border-gray-200">
     <div class="flex flex-col gap-1">
       <input
         bind:this={fileInput}
@@ -157,20 +180,37 @@
       {/if}
     </div>
 
-    <div class="flex gap-3 items-center">
-      <label for="slice-type" class="text-sm font-medium text-gray-700 shrink-0">View:</label>
-      <select
-        id="slice-type"
-        on:change={handleSliceTypeChange}
-        bind:value={sliceType}
-        disabled={!nv || isLoading}
-        class="p-2 rounded border border-gray-300 text-sm focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 bg-white disabled:opacity-60 disabled:bg-gray-100"
-        >
-        <option value="0">Axial</option>
-        <option value="1">Coronal</option>
-        <option value="2">Sagittal</option>
-        <option value="3">Multiplanar</option>
-      </select>
+    <div class="flex flex-wrap gap-x-6 gap-y-2 items-center">
+      <div class="flex gap-3 items-center">
+        <label for="slice-type" class="text-sm font-medium text-gray-700 shrink-0">View:</label>
+        <select
+          id="slice-type"
+          on:change={handleSliceTypeChange}
+          bind:value={sliceType}
+          disabled={!nv || isLoading}
+          class="p-2 rounded border border-gray-300 text-sm focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 bg-white disabled:opacity-60 disabled:bg-gray-100"
+          >
+          <option value="0">Axial</option>
+          <option value="1">Coronal</option>
+          <option value="2">Sagittal</option>
+          <option value="3">Multiplanar</option>
+        </select>
+      </div>
+
+      <div class="flex gap-3 items-center">
+        <label for="colormap" class="text-sm font-medium text-gray-700 shrink-0">Colormap:</label>
+        <select
+          id="colormap"
+          bind:value={selectedColormap}
+          on:change={handleColormapChange}
+          disabled={!nv || isLoading || !currentFile}
+          class="p-2 rounded border border-gray-300 text-sm focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 bg-white disabled:opacity-60 disabled:bg-gray-100 capitalize"
+          >
+          {#each availableColormaps as cmap}
+            <option value={cmap}>{cmap}</option>
+          {/each}
+        </select>
+      </div>
 
       <button
         on:click={resetView}
