@@ -8,7 +8,7 @@
   let isLoading = false;
   let errorMessage = '';
   let currentFile: string | null = null;
-  let sliceType = 0;
+  let sliceType = 3; // Default set to 3 (Multiplanar)
 
   onMount(() => {
     try {
@@ -62,7 +62,7 @@
       await nv.loadFromFile(file);
       console.log("Successfully loaded file:", file.name);
       if (fileInput) fileInput.value = '';
-      updateSliceType();
+      updateSliceType(); // Apply the default slice type (now Multiplanar)
     } catch (error) {
       console.error(`Error loading file "${file.name}":`, error);
       if (error instanceof Error) {
