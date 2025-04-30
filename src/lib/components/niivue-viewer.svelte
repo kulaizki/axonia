@@ -153,7 +153,7 @@
         accept=".nii,.nii.gz,.mgh,.mgz,application/octet-stream,application/gzip"
         on:change={handleFileUpload}
         disabled={isLoading}
-        aria-label="Upload NIfTI file"
+        aria-label="Upload NIfTI "
         class="block w-full max-w-xs text-sm text-gray-600 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-100 file:text-blue-700 hover:file:bg-blue-200 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
       />
       {#if isLoading}
