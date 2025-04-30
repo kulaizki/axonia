@@ -20,7 +20,7 @@
   onMount(() => {
     try {
         nv = new Niivue({
-          backColor: [0.2, 0.2, 0.2, 1],
+          backColor: [0.15, 0.15, 0.15, 1],
           colorbarHeight: 0.05,
           dragMode: 1,
           multiplanarForceRender: true,
@@ -143,39 +143,39 @@
   }
 </script>
 
-<div class="flex flex-col w-full max-w-6xl mx-auto p-4 space-y-4">
+<div class="flex flex-col w-full max-w-6xl mx-auto p-4 space-y-6">
 
-  <div class="flex flex-wrap gap-x-6 gap-y-4 justify-between items-center border-b pb-4 border-gray-200">
-    <div class="flex flex-col gap-1">
+  <div class="flex flex-wrap gap-x-6 gap-y-4 justify-between items-center border-b pb-4 border-gray-700">
+    <div class="flex flex-col gap-2">
       <input
         bind:this={fileInput}
         type="file"
         accept=".nii,.nii.gz,.mgh,.mgz,application/octet-stream,application/gzip"
         on:change={handleFileUpload}
         disabled={isLoading}
-        aria-label="Upload NIfTI "
-        class="block w-full max-w-xs text-sm text-gray-600 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-100 file:text-blue-700 hover:file:bg-blue-200 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+        aria-label="Upload NIfTI file"
+        class="block w-full max-w-xs text-sm text-gray-300 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-gray-600 file:text-gray-100 hover:file:bg-gray-500 file:cursor-pointer focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 focus:ring-offset-gray-800 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer hover:cursor-pointer"
       />
       {#if isLoading}
-        <p class="text-blue-600 font-medium text-sm animate-pulse pt-1">Loading...</p>
+        <p class="text-blue-400 font-medium text-sm animate-pulse pt-1">Loading...</p>
       {/if}
       {#if errorMessage}
-        <p class="text-red-600 font-medium text-sm bg-red-100 px-2 py-1 rounded mt-1">{errorMessage}</p>
+        <p class="text-red-400 font-medium text-sm bg-red-900 bg-opacity-30 px-2 py-1 rounded mt-1">{errorMessage}</p>
       {/if}
       {#if currentFile && !isLoading && !errorMessage}
-        <p class="font-semibold text-sm text-gray-700 pt-1">Current: <span class="font-normal italic">{currentFile}</span></p>
+        <p class="font-semibold text-sm text-gray-300 pt-1">Current: <span class="font-normal italic text-gray-400">{currentFile}</span></p>
       {/if}
     </div>
 
-    <div class="flex flex-wrap gap-x-6 gap-y-2 items-center">
+    <div class="flex flex-wrap gap-x-6 gap-y-3 items-center">
       <div class="flex gap-3 items-center">
-        <label for="slice-type" class="text-sm font-medium text-gray-700 shrink-0">View:</label>
+        <label for="slice-type" class="text-sm font-medium text-gray-300 shrink-0">View:</label>
         <select
           id="slice-type"
           on:change={handleSliceTypeChange}
           bind:value={sliceType}
           disabled={!nv || isLoading}
-          class="p-2 rounded border border-gray-300 text-sm focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 bg-white disabled:opacity-60 disabled:bg-gray-100"
+          class="p-2 rounded border border-gray-600 bg-gray-700 text-gray-100 text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 focus:border-blue-500 focus:ring-offset-gray-800 disabled:opacity-60 disabled:bg-gray-600 disabled:text-gray-400 disabled:cursor-not-allowed"
           >
           <option value={0}>Axial</option>
           <option value={1}>Coronal</option>
@@ -185,13 +185,13 @@
       </div>
 
       <div class="flex gap-3 items-center">
-        <label for="colormap" class="text-sm font-medium text-gray-700 shrink-0">Colormap:</label>
+        <label for="colormap" class="text-sm font-medium text-gray-300 shrink-0">Colormap:</label>
         <select
           id="colormap"
           bind:value={selectedColormap}
           on:change={handleColormapChange}
           disabled={!nv || isLoading || !currentFile}
-          class="p-2 rounded border border-gray-300 text-sm focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 bg-white disabled:opacity-60 disabled:bg-gray-100 capitalize"
+          class="p-2 rounded border border-gray-600 bg-gray-700 text-gray-100 text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 focus:border-blue-500 focus:ring-offset-gray-800 disabled:opacity-60 disabled:bg-gray-600 disabled:text-gray-400 disabled:cursor-not-allowed capitalize"
           >
           {#each availableColormaps as cmap}
             <option value={cmap}>{cmap}</option>
@@ -202,33 +202,33 @@
       <button
         on:click={resetView}
         disabled={!nv || isLoading}
-        class="py-2 px-3 bg-blue-600 text-white rounded cursor-pointer transition-all duration-200 hover:bg-blue-700 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
+        class="py-2 px-3 bg-blue-600 text-white rounded cursor-pointer transition-all duration-200 hover:bg-blue-500 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 focus:ring-offset-gray-800 disabled:opacity-50 disabled:cursor-not-allowed"
         >
         Reset View
       </button>
     </div>
   </div>
 
-  <div class="w-full h-[65vh] min-h-[450px] border border-gray-300 rounded-lg overflow-hidden bg-black shadow-lg relative">
+  <div class="w-full h-[65vh] min-h-[450px] border border-gray-700 rounded-lg overflow-hidden bg-black shadow-lg relative">
     <canvas bind:this={canvas} class="w-full h-full block" aria-label="NiiVue neuroimaging canvas"></canvas>
     {#if !currentFile && !isLoading && !errorMessage && !nv}
        <div class="absolute inset-0 flex items-center justify-center text-gray-600 pointer-events-none">
-         <p class="bg-gray-800 bg-opacity-70 text-gray-200 px-4 py-2 rounded">Initializing Viewer...</p>
+         <p class="bg-gray-900 bg-opacity-80 text-gray-300 px-4 py-2 rounded-md">Initializing Viewer...</p>
        </div>
     {:else if !currentFile && !isLoading && !errorMessage && nv}
        <div class="absolute inset-0 flex items-center justify-center text-gray-500 pointer-events-none">
-         <p>Upload a file (.nii, .nii.gz, etc.) to begin</p>
+         <p class="text-lg">Upload a file (.nii, .nii.gz, etc.) to begin</p>
        </div>
     {/if}
   </div>
 
-  <div class="mt-4 p-4 bg-gray-50 rounded-lg text-xs border border-gray-200">
-    <h3 class="font-semibold mb-2 text-sm text-gray-800">Interaction Guide:</h3>
-    <ul class="ml-5 list-disc space-y-1 text-gray-700">
-      <li><strong class="font-medium">Left-click + drag:</strong> Adjust contrast & brightness</li>
-      <li><strong class="font-medium">Right-click + drag:</strong> Pan the image</li>
-      <li><strong class="font-medium">Scroll wheel:</strong> Zoom in/out</li>
-      <li><strong class="font-medium">Middle-click + drag</strong> or <strong class="font-medium">Alt + left-click + drag:</strong> Navigate slices</li>
+  <div class="p-4 bg-gray-800 rounded-lg text-xs border border-gray-700 shadow-md">
+    <h3 class="font-semibold mb-2 text-sm text-gray-100">Interaction Guide:</h3>
+    <ul class="ml-5 list-disc space-y-1 text-gray-300">
+      <li><strong class="font-semibold text-gray-200">Left-click + drag:</strong> Adjust contrast & brightness</li>
+      <li><strong class="font-semibold text-gray-200">Right-click + drag:</strong> Pan the image</li>
+      <li><strong class="font-semibold text-gray-200">Scroll wheel:</strong> Zoom in/out</li>
+      <li><strong class="font-semibold text-gray-200">Middle-click + drag</strong> or <strong class="font-semibold text-gray-200">Alt + left-click + drag:</strong> Navigate slices</li>
     </ul>
   </div>
 
