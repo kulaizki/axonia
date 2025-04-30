@@ -8,11 +8,10 @@
   let isLoading = false;
   let errorMessage = '';
   let currentFile: string | null = null;
-  let sliceType = 3;
+  let sliceType: number = 3;
+  let selectedColormap: string = 'inferno';
 
-  // --- Colormap State ---
-  let selectedColormap = 'inferno'; 
-  const availableColormaps = [ 
+  const availableColormaps: string[] = [
     'grayscale', 'negative', 'viridis', 'plasma', 'magma', 'inferno',
     'hot', 'cool', 'bone', 'pink', 'jet', 'hsv',
     'spring', 'summer', 'autumn', 'winter', 'surface'
@@ -33,6 +32,8 @@
         errorMessage = "Error initializing the viewer. Please refresh.";
         nv = null;
     }
+    sliceType = sliceType;
+    selectedColormap = selectedColormap;
     return () => {};
   });
 
@@ -60,17 +61,12 @@
     isLoading = true;
     errorMessage = '';
     currentFile = file.name;
-    console.log(`File selected: Name: ${file.name}, Size: ${file.size}, Type: ${file.type || 'N/A'}`);
 
     try {
-      console.log("Attempting to load file with nv.loadFromFile...");
       await nv.loadFromFile(file);
-      console.log("Successfully loaded file:", file.name);
       if (fileInput) fileInput.value = '';
-
-      updateSliceType(); 
-      applyColormap(); 
-
+      updateSliceType();
+      applyColormap();
     } catch (error) {
       console.error(`Error loading file "${file.name}":`, error);
       if (error instanceof Error) {
@@ -81,20 +77,14 @@
       currentFile = null;
     } finally {
       isLoading = false;
-      console.log("File loading attempt finished.");
     }
   }
 
-  // --- Colormap Application Logic ---
   function applyColormap() {
-      if (!nv || !nv.volumes || nv.volumes.length === 0) {
-          console.warn("Cannot apply colormap: Niivue not ready or no volume loaded.");
-          return;
-      }
+      if (!nv || !nv.volumes || nv.volumes.length === 0) return;
       try {
-          console.log(`Applying colormap: ${selectedColormap}`);
           nv.volumes[0].colormap = selectedColormap;
-          nv.updateGLVolume(); 
+          nv.updateGLVolume();
       } catch (e) {
           console.error("Error applying colormap:", e);
           errorMessage = "Failed to apply colormap.";
@@ -102,15 +92,11 @@
   }
 
   function updateSliceType() {
-    if (!nv) {
-        console.warn("updateSliceType called but Niivue instance not ready.");
-        return;
-    }
+    if (!nv) return;
     const multiplanarType = typeof (nv as any).sliceTypeMultiplanar === 'number'
                             ? (nv as any).sliceTypeMultiplanar
                             : 3;
     try {
-        console.log(`Setting slice type to: ${sliceType === 3 ? 'Multiplanar (' + multiplanarType + ')' : sliceType}`);
         if (sliceType === 3) {
             nv.setSliceType(multiplanarType);
         } else {
@@ -130,8 +116,6 @@
         if (nv) {
             updateSliceType();
         }
-    } else {
-        console.warn("Invalid slice type selected:", select.value);
     }
   }
 
@@ -144,14 +128,17 @@
   function resetView() {
     if (nv) {
       try {
-        console.log("Resetting view with nv.setDefaults()");
         nv.setDefaults();
+        selectedColormap = 'inferno';
+        sliceType = 3;
+        if (nv.volumes?.length > 0) {
+            applyColormap();
+        }
+        updateSliceType();
       } catch(e) {
         console.error("Error calling nv.setDefaults():", e);
         errorMessage = "Failed to reset view.";
       }
-    } else {
-      console.warn("Reset view called but Niivue instance not ready.");
     }
   }
 </script>
@@ -190,10 +177,10 @@
           disabled={!nv || isLoading}
           class="p-2 rounded border border-gray-300 text-sm focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 bg-white disabled:opacity-60 disabled:bg-gray-100"
           >
-          <option value="0">Axial</option>
-          <option value="1">Coronal</option>
-          <option value="2">Sagittal</option>
-          <option value="3">Multiplanar</option>
+          <option value={0}>Axial</option>
+          <option value={1}>Coronal</option>
+          <option value={2}>Sagittal</option>
+          <option value={3}>Multiplanar</option>
         </select>
       </div>
 
