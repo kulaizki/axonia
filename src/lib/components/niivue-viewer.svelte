@@ -18,7 +18,8 @@
   ];
 
   onMount(() => {
-    try {
+    const init = async () => {
+      try {
         nv = new Niivue({
           backColor: [0.15, 0.15, 0.15, 1],
           colorbarHeight: 0.05,
@@ -27,26 +28,56 @@
           isResizeCanvas: true
         });
         nv.attachToCanvas(canvas);
-    } catch(initError) {
+        await loadDefaultFile();
+      } catch(initError) {
         console.error("Failed to initialize Niivue:", initError);
         errorMessage = "Error initializing the viewer. Please refresh.";
         nv = null;
-    }
-    sliceType = sliceType;
-    selectedColormap = selectedColormap;
-    return () => {};
+      }
+      sliceType = sliceType;
+      selectedColormap = selectedColormap;
+    };
+
+    init();
+
+    return () => {
+      if (nv && typeof (nv as any).destroy === 'function') {
+        try {
+          (nv as any).destroy();
+        } catch (e) {
+          console.error("Error calling Niivue destroy method:", e);
+        }
+      }
+      nv = null;
+    };
   });
 
-  onDestroy(() => {
-    if (nv && typeof (nv as any).destroy === 'function') {
-        try {
-            (nv as any).destroy();
-        } catch (e) {
-            console.error("Error calling Niivue destroy method:", e);
-        }
+  async function loadDefaultFile() {
+    if (!nv) {
+      errorMessage = "NiiVue viewer is not ready. Please wait or refresh.";
+      console.error(errorMessage);
+      return;
     }
-    nv = null;
-  });
+    isLoading = true;
+    errorMessage = '';
+    currentFile = 'sample_brain.nii.gz (sample)';
+
+    try {
+      await nv.loadVolumes([{ url: './sample_brain.nii.gz' }]);
+      updateSliceType();
+      applyColormap();
+    } catch (error) {
+      console.error('Error loading default file "sample_brain.nii.gz":', error);
+      if (error instanceof Error) {
+        errorMessage = `Failed to load default: ${error.message}. Check console.`;
+      } else {
+        errorMessage = 'An unexpected error occurred loading default. Check console.';
+      }
+      currentFile = null;
+    } finally {
+      isLoading = false;
+    }
+  }
 
   async function handleFileUpload(event: Event) {
     const input = event.target as HTMLInputElement;
@@ -81,14 +112,14 @@
   }
 
   function applyColormap() {
-      if (!nv || !nv.volumes || nv.volumes.length === 0) return;
-      try {
-          nv.volumes[0].colormap = selectedColormap;
-          nv.updateGLVolume();
-      } catch (e) {
-          console.error("Error applying colormap:", e);
-          errorMessage = "Failed to apply colormap.";
-      }
+    if (!nv || !nv.volumes || nv.volumes.length === 0) return;
+    try {
+      nv.volumes[0].colormap = selectedColormap;
+      nv.updateGLVolume();
+    } catch (e) {
+      console.error("Error applying colormap:", e);
+      errorMessage = "Failed to apply colormap.";
+    }
   }
 
   function updateSliceType() {
@@ -97,14 +128,14 @@
                             ? (nv as any).sliceTypeMultiplanar
                             : 3;
     try {
-        if (sliceType === 3) {
-            nv.setSliceType(multiplanarType);
-        } else {
-            nv.setSliceType(sliceType);
-        }
+      if (sliceType === 3) {
+        nv.setSliceType(multiplanarType);
+      } else {
+        nv.setSliceType(sliceType);
+      }
     } catch (e) {
-        console.error("Error setting slice type:", e);
-        errorMessage = "Failed to change view type.";
+      console.error("Error setting slice type:", e);
+      errorMessage = "Failed to change view type.";
     }
   }
 
@@ -112,18 +143,18 @@
     const select = event.target as HTMLSelectElement;
     const newType = parseInt(select.value, 10);
     if (!isNaN(newType)) {
-        sliceType = newType;
-        if (nv) {
-            updateSliceType();
-        }
+      sliceType = newType;
+      if (nv) {
+        updateSliceType();
+      }
     }
   }
 
-   function handleColormapChange() {
-       if (nv) {
-           applyColormap();
-       }
-   }
+  function handleColormapChange() {
+    if (nv) {
+      applyColormap();
+    }
+  }
 
   function resetView() {
     if (nv) {
@@ -132,7 +163,7 @@
         selectedColormap = 'inferno';
         sliceType = 3;
         if (nv.volumes?.length > 0) {
-            applyColormap();
+          applyColormap();
         }
         updateSliceType();
       } catch(e) {
