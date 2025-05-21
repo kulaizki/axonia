@@ -87,6 +87,14 @@ const createNiivueStore = () => {
       }));
 
       try {
+        // Clear any existing volumes before loading the default file
+        if (nv.volumes && nv.volumes.length > 0) {
+          // Remove all volumes by clearing the array
+          while (nv.volumes.length > 0) {
+            nv.removeVolumeByIndex(0);
+          }
+        }
+
         await nv.loadVolumes([{ url: './sample_brain.nii.gz' }]);
         const state = get({ subscribe });
         
@@ -153,6 +161,14 @@ const createNiivueStore = () => {
       }));
 
       try {
+        // Clear any existing volumes before loading new file
+        if (nv.volumes && nv.volumes.length > 0) {
+          // Remove all volumes by clearing the array
+          while (nv.volumes.length > 0) {
+            nv.removeVolumeByIndex(0);
+          }
+        }
+        
         await nv.loadFromFile(file);
         
         // Apply settings after load
