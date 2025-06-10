@@ -53,7 +53,9 @@
           <a href="/#features" on:click={handleNav} class="text-gray-300 hover:text-emerald-400 transition-colors">Features</a>
           <a href="/#how-it-works" on:click={handleNav} class="text-gray-300 hover:text-emerald-400 transition-colors">How It Works</a>
           <a href="/#benefits" on:click={handleNav} class="text-gray-300 hover:text-emerald-400 transition-colors">Benefits</a>
-          <a href="/visualizer" class="bg-emerald-500 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-emerald-600 transition-colors">Launch App</a>
+          {#if $page.url.pathname !== '/visualizer'}
+            <a href="/visualizer" class="bg-emerald-500 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-emerald-600 transition-colors">Launch App</a>
+          {/if}
         </nav>
       </div>
       <div class="md:hidden flex items-center">
@@ -79,7 +81,9 @@
         <a href="/#features" on:click={handleNav} class="text-gray-300 hover:text-white hover:bg-gray-700 block px-3 py-2 rounded-md text-base font-medium">Features</a>
         <a href="/#how-it-works" on:click={handleNav} class="text-gray-300 hover:text-white hover:bg-gray-700 block px-3 py-2 rounded-md text-base font-medium">How It Works</a>
         <a href="/#benefits" on:click={handleNav} class="text-gray-300 hover:text-white hover:bg-gray-700 block px-3 py-2 rounded-md text-base font-medium">Benefits</a>
-        <a href="/visualizer" class="bg-emerald-500 text-white block px-3 py-2 rounded-md text-base font-medium hover:bg-emerald-600">Launch App</a>
+        {#if $page.url.pathname !== '/visualizer'}
+          <a href="/visualizer" class="bg-emerald-500 text-white block px-3 py-2 rounded-md text-base font-medium hover:bg-emerald-600">Launch App</a>
+        {/if}
       </div>
     </div>
   {/if}
