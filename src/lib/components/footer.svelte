@@ -5,7 +5,7 @@
 			<a
 				href="https://fitzsixto.com/"
 				target="_blank"
-				rel="noopener noreferrer"
+				rel="noopener"
 				class="bg-gradient-to-r from-sky-300 to-sky-600 bg-clip-text font-bold text-transparent transition duration-200 ease-in-out [text-shadow:0_0_8px_rgba(0,242,255,0.4)] hover:from-blue-400 hover:to-blue-800"
 			>
 				Fitzsixto
@@ -13,7 +13,7 @@
 		</p>
 		<div class="flex space-x-4">
 			<a
-				href="https://github.com/kulaizki/planpokr/"
+				href="https://github.com/kulaizki/axonia/"
 				target="_blank"
 				rel="noopener noreferrer"
 				aria-label="GitHub"
