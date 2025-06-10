@@ -1,6 +1,8 @@
-# cs-neuro 
+# Axonia
 
-An interactive web-based viewer for NIfTI neuroimaging files (`.nii`, `.nii.gz`, `.mgh`, `.mgz`), built using SvelteKit, NiiVue.js, and Tailwind CSS.
+**Axonia** is an interactive web-based viewer for NIfTI neuroimaging files (`.nii`, `.nii.gz`, `.mgh`, `.mgz`), built using SvelteKit, NiiVue.js, and Tailwind CSS.
+
+*Mapping neural pathways.*
 
 ## Features
 
@@ -34,8 +36,8 @@ An interactive web-based viewer for NIfTI neuroimaging files (`.nii`, `.nii.gz`,
 
 1.  **Clone the repository** (if applicable, otherwise integrate the component into your project):
     ```bash
-    # git clone https://github.com/kulaizki/cs-neuro.git
-    # cd cs-neuro
+    # git clone https://github.com/kulaizki/axonia.git
+    # cd axonia
     ```
 
 2.  **Install dependencies:**
