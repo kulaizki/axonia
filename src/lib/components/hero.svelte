@@ -13,7 +13,7 @@
 	});
 </script>
 
-<section id="hero" class="hero-section relative flex min-h-screen flex-col justify-center overflow-hidden bg-cover bg-center bg-no-repeat py-16 lg:h-screen lg:py-0 border-b-2 border-emerald-500 shadow-[0_1px_3px_0_rgba(16,185,129,0.5)]">
+<section id="hero" class="hero-section relative flex min-h-screen flex-col justify-center overflow-hidden bg-gray-950 bg-contain bg-center bg-no-repeat py-16 lg:h-screen lg:bg-cover lg:py-0 border-b-2 border-emerald-500 shadow-[0_1px_3px_0_rgba(16,185,129,0.5)]">
 	<div class="relative z-[2] container mx-auto px-4 text-center">
 		<div
 			class="mb-4 inline-block transition-all duration-700 ease-out sm:mb-6 {isInView ? 'translate-y-0 opacity-100' : '-translate-y-8 opacity-0'}"
