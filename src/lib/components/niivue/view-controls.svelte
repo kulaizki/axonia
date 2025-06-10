@@ -27,7 +27,7 @@
       on:change={handleSliceTypeChange}
       value={$niivueStore.sliceType}
       disabled={!$niivueStore.instance || $niivueStore.isLoading}
-      class="p-2 rounded border border-gray-600 bg-gray-700 text-gray-100 text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 focus:border-blue-500 focus:ring-offset-gray-800 disabled:opacity-60 disabled:bg-gray-600 disabled:text-gray-400 disabled:cursor-not-allowed"
+      class="p-2 rounded border border-gray-600 bg-gray-700 text-gray-100 text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500 focus:border-emerald-500 focus:ring-offset-gray-800 disabled:opacity-60 disabled:bg-gray-600 disabled:text-gray-400 disabled:cursor-not-allowed"
     >
       <option value={0}>Axial</option>
       <option value={1}>Coronal</option>
@@ -43,7 +43,7 @@
       value={$niivueStore.selectedColormap}
       on:change={handleColormapChange}
       disabled={!$niivueStore.instance || $niivueStore.isLoading || !$niivueStore.currentFile}
-      class="p-2 rounded border border-gray-600 bg-gray-700 text-gray-100 text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 focus:border-blue-500 focus:ring-offset-gray-800 disabled:opacity-60 disabled:bg-gray-600 disabled:text-gray-400 disabled:cursor-not-allowed capitalize"
+      class="p-2 rounded border border-gray-600 bg-gray-700 text-gray-100 text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500 focus:border-emerald-500 focus:ring-offset-gray-800 disabled:opacity-60 disabled:bg-gray-600 disabled:text-gray-400 disabled:cursor-not-allowed capitalize"
     >
       {#each AVAILABLE_COLORMAPS as cmap}
         <option value={cmap}>{cmap}</option>
@@ -54,7 +54,7 @@
   <button
     on:click={resetView}
     disabled={!$niivueStore.instance || $niivueStore.isLoading}
-    class="py-2 px-3 bg-blue-600 text-white rounded cursor-pointer transition-all duration-200 hover:bg-blue-500 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 focus:ring-offset-gray-800 disabled:opacity-50 disabled:cursor-not-allowed"
+    class="py-2 px-3 bg-emerald-600 text-white rounded cursor-pointer transition-all duration-200 hover:bg-emerald-500 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500 focus:ring-offset-gray-800 disabled:opacity-50 disabled:cursor-not-allowed"
   >
     Reset View
   </button>

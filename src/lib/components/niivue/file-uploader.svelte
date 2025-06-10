@@ -22,11 +22,11 @@
     on:change={handleFileUpload}
     disabled={$niivueStore.isLoading}
     aria-label="Upload NIfTI file"
-    class="block w-full max-w-xs text-sm text-gray-300 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-gray-600 file:text-gray-100 hover:file:bg-gray-500 file:cursor-pointer focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 focus:ring-offset-gray-800 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer hover:cursor-pointer"
+    class="block w-full max-w-xs text-sm text-gray-300 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-gray-600 file:text-gray-100 hover:file:bg-gray-500 file:cursor-pointer focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500 focus:ring-offset-gray-800 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer hover:cursor-pointer"
   />
   
   {#if $niivueStore.isLoading}
-    <p class="text-blue-400 font-medium text-sm animate-pulse pt-1">Loading...</p>
+    <p class="text-emerald-400 font-medium text-sm animate-pulse pt-1">Loading...</p>
   {/if}
   
   {#if $niivueStore.errorMessage}
