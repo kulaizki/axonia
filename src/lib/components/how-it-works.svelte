@@ -23,7 +23,7 @@
     ];
   </script>
   
-  <section id="how-it-works" class="min-h-screen bg-gray-900 py-20 sm:py-32 flex items-center">
+  <section id="how-it-works" class="h-screen bg-gray-900 flex items-center">
     <div 
       class="mx-auto max-w-7xl px-6 lg:px-8 transition-all duration-700 {isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}"
       use:inview={{ unobserveOnEnter: true }}

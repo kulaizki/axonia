@@ -5,7 +5,7 @@
 @tailwind utilities;
 
 html {
-    scroll-padding-top: 5rem; /* Adjust to match header height */
+    scroll-padding-top: 4rem; /* Adjust to match header height */
     scrollbar-gutter: stable;
     scroll-behavior: smooth;
 }

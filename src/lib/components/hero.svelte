@@ -13,7 +13,7 @@
 	});
 </script>
 
-<section id="hero" class="hero-section relative flex min-h-screen flex-col justify-center overflow-hidden bg-cover bg-center bg-no-repeat py-16 md:py-20">
+<section id="hero" class="hero-section relative flex h-screen flex-col justify-center overflow-hidden bg-cover bg-center bg-no-repeat">
 	<div class="relative z-[2] container mx-auto px-4 text-center">
 		<div
 			class="mb-4 inline-block transition-all duration-700 ease-out sm:mb-6 {isInView ? 'translate-y-0 opacity-100' : '-translate-y-8 opacity-0'}"
