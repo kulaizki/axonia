@@ -2,7 +2,7 @@
   export let title = 'Axonia';
   export let description = 'An open-source, web-based viewer for neuroimaging data.';
   export let url = 'https://axonia.vercel.app'; 
-  export let image = '/cs-neuro-logo.png'; 
+  export let image = '/axonia-logo-text.png'; 
 </script>
 
 <svelte:head>

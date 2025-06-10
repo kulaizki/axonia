@@ -45,8 +45,7 @@
     <div class="flex items-center justify-between h-16">
       <div class="flex-shrink-0">
         <a href="/" on:click={handleNav} class="flex items-center space-x-2">
-          <img class="h-8 w-auto" src="/cs-neuro-logo.png" alt="Axonia Logo" />
-          <span class="text-white text-xl font-bold">Axonia</span>
+          <img class="h-8 w-auto" src="/axonia-logo-text.png" alt="Axonia Logo" />
         </a>
       </div>
       <div class="hidden md:block">

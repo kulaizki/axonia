@@ -38,7 +38,7 @@
 			<!-- Company Info -->
 			<div class="mb-8 md:mb-0 lg:col-span-2">
 				<a href="/" class="mb-4 inline-block" on:click={handleNav}>
-					<img src="/cs-neuro-logo.png" alt="Axonia Logo" class="h-12 w-auto" />
+					<img src="/axonia-logo-text.png" alt="Axonia Logo" class="h-12 w-auto" />
 				</a>
 				<p class="text-gray-400">An open-source, web-based viewer for neuroimaging data. All processing is done in your browser for maximum privacy.</p>
 				<div class="mt-6 flex space-x-4">
