@@ -4,18 +4,24 @@
 	import Footer from '$lib/components/footer.svelte';
 	import SEO from '$lib/components/seo.svelte';
 	import BackToTop from '$lib/components/back-to-top.svelte';
+	import { page } from '$app/stores';
+	import { fade } from 'svelte/transition';
 </script>
 
 <svelte:head>
-	<link rel="icon" href="/cs-neuro-logo.png" />
+	<link rel="icon" href="/axonia-logo.png" />
 </svelte:head>
 
 <SEO />
 
-<div class="flex flex-col min-h-screen bg-gray-900">
+<div class="flex min-h-screen flex-col bg-gray-950 text-white">
 	<Header />
 	<main class="flex-1">
-		<slot />
+		{#key $page.url.pathname}
+			<div in:fade={{ duration: 300, delay: 300 }} out:fade={{ duration: 300 }}>
+				<slot />
+			</div>
+		{/key}
 	</main>
 	<Footer />
 </div>
