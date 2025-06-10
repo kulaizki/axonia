@@ -6,7 +6,7 @@
   import InteractionGuide from '$lib/components/niivue/InteractionGuide.svelte';
 </script>
 
-<div class="flex flex-col w-full max-w-6xl mx-auto p-4 space-y-6">
+<div class="flex flex-col w-full max-w-6xl mx-auto space-y-6">
   <div class="flex flex-wrap gap-x-6 gap-y-4 justify-between items-center border-b pb-4 border-gray-700">
     <FileUploader />
     <ViewControls />
