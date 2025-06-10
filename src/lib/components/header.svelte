@@ -1,0 +1,78 @@
+<script lang="ts">
+  import { onMount } from 'svelte';
+  import { browser } from '$app/environment';
+
+  let mobileMenuOpen = false;
+
+  function smoothScroll(event: MouseEvent) {
+    if (!browser) return;
+    event.preventDefault();
+    const targetId = (event.currentTarget as HTMLAnchorElement).getAttribute('href');
+    if (targetId) {
+      const targetElement = document.querySelector(targetId);
+      if (targetElement) {
+        targetElement.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start'
+        });
+      }
+    }
+    mobileMenuOpen = false;
+  }
+
+  function scrollToTop(event: MouseEvent) {
+    if (!browser) return;
+    event.preventDefault();
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+    mobileMenuOpen = false;
+  }
+</script>
+
+<header class="sticky top-0 z-50 bg-gray-950/70 backdrop-blur-md border-b border-gray-700/50">
+  <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex items-center justify-between h-16">
+      <div class="flex-shrink-0">
+        <a href="/" on:click={scrollToTop} class="flex items-center space-x-2">
+          <img class="h-8 w-auto" src="/cs-neuro-logo.png" alt="Axonia Logo" />
+          <span class="text-white text-xl font-bold">Axonia</span>
+        </a>
+      </div>
+      <div class="hidden md:block">
+        <nav class="flex items-center space-x-8">
+          <a href="/#features" on:click={smoothScroll} class="text-gray-300 hover:text-emerald-400 transition-colors">Features</a>
+          <a href="/#how-it-works" on:click={smoothScroll} class="text-gray-300 hover:text-emerald-400 transition-colors">How It Works</a>
+          <a href="/#benefits" on:click={smoothScroll} class="text-gray-300 hover:text-emerald-400 transition-colors">Benefits</a>
+          <a href="/visualizer" class="bg-emerald-500 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-emerald-600 transition-colors">Launch App</a>
+        </nav>
+      </div>
+      <div class="md:hidden flex items-center">
+        <button on:click={() => mobileMenuOpen = !mobileMenuOpen} class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white" aria-expanded="false">
+          <span class="sr-only">Open main menu</span>
+          {#if !mobileMenuOpen}
+            <svg class="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+          {:else}
+            <svg class="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          {/if}
+        </button>
+      </div>
+    </div>
+  </div>
+
+  {#if mobileMenuOpen}
+    <div class="md:hidden" id="mobile-menu">
+      <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+        <a href="/#features" on:click={smoothScroll} class="text-gray-300 hover:text-white hover:bg-gray-700 block px-3 py-2 rounded-md text-base font-medium">Features</a>
+        <a href="/#how-it-works" on:click={smoothScroll} class="text-gray-300 hover:text-white hover:bg-gray-700 block px-3 py-2 rounded-md text-base font-medium">How It Works</a>
+        <a href="/#benefits" on:click={smoothScroll} class="text-gray-300 hover:text-white hover:bg-gray-700 block px-3 py-2 rounded-md text-base font-medium">Benefits</a>
+        <a href="/visualizer" class="bg-emerald-500 text-white block px-3 py-2 rounded-md text-base font-medium hover:bg-emerald-600">Launch App</a>
+      </div>
+    </div>
+  {/if}
+</header> 
