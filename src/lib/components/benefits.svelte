@@ -26,7 +26,7 @@
   ];
 </script>
 
-<section id="benefits" class="relative h-screen bg-gray-950 flex items-center border-b-2 border-emerald-500 shadow-[0_1px_3px_0_rgba(16,185,129,0.5)]">
+<section id="benefits" class="relative min-h-screen bg-gray-950 flex items-center py-16 lg:h-screen lg:py-0 border-b-2 border-emerald-500 shadow-[0_1px_3px_0_rgba(16,185,129,0.5)]">
     <div 
         class="mx-auto max-w-7xl px-6 lg:px-8 transition-all duration-700 {isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}"
         use:inview={{ unobserveOnEnter: true }}
