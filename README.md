@@ -1,78 +1,69 @@
 # Axonia
 
-**Axonia** is an interactive web-based viewer for NIfTI neuroimaging files (`.nii`, `.nii.gz`, `.mgh`, `.mgz`), built using SvelteKit, NiiVue.js, and Tailwind CSS.
+![Axonia Preview](static/axonia-opengraph-2.png)
 
-*Mapping neural pathways.*
+**Axonia** is a sleek, modern, and interactive web-based viewer for NIfTI neuroimaging files (`.nii`, `.nii.gz`), built with the latest web technologies. It provides a zero-installation, browser-based solution for researchers, clinicians, and students to visualize and explore brain data instantly.
 
-## Features
+*Mapping neural pathways, one voxel at a time.*
 
-* **Load Local Files:** Upload NIfTI files (`.nii`, `.nii.gz`, `.mgh`, `.mgz`) using the file input button.
-* **Multiple View Modes:** Switch between Axial, Coronal, Sagittal, and Multiplanar views.
-    * Defaults to **Multiplanar** view on load.
-* **Colormap Selection:** Choose from a variety of standard medical imaging colormaps.
-    * Defaults to **Inferno** colormap on load.
-* **NiiVue Interaction:** Leverage NiiVue's built-in controls for:
-    * Contrast/Brightness adjustment (Left-click + drag)
-    * Panning (Right-click + drag)
-    * Zooming (Scroll wheel)
-    * Slicing (Middle-click + drag or Alt + Left-click + drag)
-* **Reset Functionality:** A "Reset View" button to return the view settings to their defaults.
-* **Responsive Canvas:** The viewer canvas adapts to available space.
-* **Modern UI:** Styled using Tailwind CSS.
+## Core Features
+
+-   **Instant File Loading:** Upload NIfTI files (`.nii`, `.nii.gz`) directly from your local machine. All processing happens in the browser, ensuring your data remains private.
+-   **Interactive 3D & 2D Views:** Seamlessly switch between Axial, Coronal, Sagittal, and a comprehensive Multi-planar view.
+-   **Dynamic Colormaps:** Apply a wide range of standard medical imaging colormaps to highlight different tissue types and structures.
+-   **Intuitive Controls:**
+    -   **Contrast/Brightness:** Left-click + drag
+    -   **Pan:** Right-click + drag
+    -   **Zoom:** Scroll wheel
+    -   **Slice Navigation:** Middle-click + drag
+-   **Reset View:** A one-click button to reset the view to its default state.
+-   **Responsive Design:** A fully responsive interface that works beautifully on any screen size.
+
+## Roadmap & Future Features
+
+Axonia is an active and ongoing project. We are continuously working on adding new features to make it a more powerful tool for neuroimaging analysis. Our roadmap includes:
+
+-   **🧠 AI-Powered Analysis with Google Gemini:** Integrating Google's Gemini models to provide insightful, AI-driven analysis of imaging data, such as identifying anomalies or summarizing findings.
+-   **🔬 Advanced Statistical Learning with Nilearn:** Incorporating the Nilearn library to enable powerful statistical analysis, machine learning, and predictive modeling directly within the viewer.
+-   **✍️ Enhanced Annotation Tools:** Improving the drawing and annotation capabilities for more detailed analysis and collaboration.
 
 ## Technologies Used
 
-* [SvelteKit](https://kit.svelte.dev/) / [Svelte](https://svelte.dev/)
-* [NiiVue.js](https://niivue.github.io/niivue/)
-* [Tailwind CSS](https://tailwindcss.com/)
-* [TypeScript](https://www.typescriptlang.org/)
-
-## Prerequisites
-
-* [Node.js](https://nodejs.org/) (Version 18.x or later recommended)
-* [npm](https://www.npmjs.com/), [pnpm](https://pnpm.io/), or [yarn](https://yarnpkg.com/)
+-   [SvelteKit](https://kit.svelte.dev/) / [Svelte](https://svelte.dev/)
+-   [NiiVue.js](https://niivue.github.io/niivue/)
+-   [Tailwind CSS](https://tailwindcss.com/)
+-   [TypeScript](https://www.typescriptlang.org/)
 
 ## Getting Started
 
-1.  **Clone the repository** (if applicable, otherwise integrate the component into your project):
+1.  **Clone the repository:**
     ```bash
-    # git clone https://github.com/kulaizki/axonia.git
-    # cd axonia
+    git clone https://github.com/kulaizki/axonia.git
+    cd axonia
     ```
 
 2.  **Install dependencies:**
     ```bash
     npm install
-    # or
-    # pnpm install
-    # or
-    # yarn install
     ```
 
 3.  **Run the development server:**
     ```bash
     npm run dev
-    # or
-    # pnpm dev
-    # or
-    # yarn dev
     ```
 
 4.  **Open your browser** to the address provided (usually `http://localhost:5173`).
 
-## Usage
+## Contributing
 
-1.  Click the "Choose File" button to select a compatible neuroimaging file (`.nii`, `.nii.gz`, `.mgh`, `.mgz`).
-2.  The file will load and display in the viewer, defaulting to the Multiplanar view and Inferno colormap.
-3.  Use the "View" dropdown to change the slice orientation (Axial, Coronal, Sagittal, Multiplanar).
-4.  Use the "Colormap" dropdown to change the color scheme applied to the image.
-5.  Interact with the image canvas using your mouse as described in the "Interaction Guide" section below the viewer.
-6.  Click the "Reset View" button to reset zoom, pan, contrast, and view settings to defaults (will also re-apply default view and colormap).
+Contributions are what make the open-source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
 
-## Configuration
+If you have a suggestion that would make this better, please fork the repo and create a pull request. You can also simply open an issue with the tag "enhancement".
 
-The default settings and available options can be adjusted within the component's `<script>` section:
+1.  Fork the Project
+2.  Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
+3.  Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
+4.  Push to the Branch (`git push origin feature/AmazingFeature`)
+5.  Open a Pull Request
 
-* **Default View:** Change the initial value of the `sliceType` variable (e.g., `0` for Axial, `3` for Multiplanar).
-* **Default Colormap:** Change the initial value of the `selectedColormap` variable (e.g., `'grayscale'`).
-* **Available Colormaps:** Modify the `availableColormaps` array to add or remove options from the dropdown.
+Don't forget to give the project a star! Thanks again!
