@@ -1,9 +1,10 @@
 <script lang="ts">
+  import NiiVueCanvas from '$lib/components/niivue/niivue-canvas.svelte';
+  import FileUploader from '$lib/components/niivue/file-uploader.svelte';
+  import ViewControls from '$lib/components/niivue/view-controls.svelte';
+  import InteractionGuide from '$lib/components/niivue/interaction-guide.svelte';
   import { niivueStore } from '$lib/stores/niivueStore';
-  import NiiVueCanvas from '$lib/components/niivue/NiiVueCanvas.svelte';
-  import FileUploader from '$lib/components/niivue/FileUploader.svelte';
-  import ViewControls from '$lib/components/niivue/ViewControls.svelte';
-  import InteractionGuide from '$lib/components/niivue/InteractionGuide.svelte';
+  import type { Niivue } from '@niivue/niivue';
 </script>
 
 <div class="flex flex-col w-full max-w-6xl mx-auto space-y-6">
