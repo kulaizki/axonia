@@ -4,6 +4,7 @@ import { Niivue } from '@niivue/niivue';
 type NiivueState = {
   instance: Niivue | null;
   isLoading: boolean;
+  isReady: boolean;
   errorMessage: string;
   currentFile: string | null;
   sliceType: number;
@@ -13,7 +14,8 @@ type NiivueState = {
 // Default values
 const initialState: NiivueState = {
   instance: null,
-  isLoading: false,
+  isLoading: true, // Start in loading state until initialized
+  isReady: false,
   errorMessage: '',
   currentFile: null,
   sliceType: 3, // Multiplanar view
@@ -32,39 +34,40 @@ const createNiivueStore = () => {
     
     // Initialize NiiVue instance
     initializeNiivue: (canvas: HTMLCanvasElement) => {
-      update(state => {
-        try {
-          const nv = new Niivue({
-            backColor: [0.15, 0.15, 0.15, 1],
-            colorbarHeight: 0.05,
-            dragMode: 1,
-            multiplanarForceRender: true,
-            isResizeCanvas: true
-          });
-          nv.attachToCanvas(canvas);
-          return { ...state, instance: nv, errorMessage: '' };
-        } catch (error) {
-          console.error("Failed to initialize Niivue:", error);
-          return { 
-            ...state, 
-            instance: null, 
-            errorMessage: "Error initializing the viewer. Please refresh." 
-          };
-        }
-      });
+      update((state) => ({ ...state, isLoading: true, isReady: false }));
+      try {
+        const nv = new Niivue({
+          backColor: [0.15, 0.15, 0.15, 1],
+          colorbarHeight: 0.05,
+          dragMode: 1,
+          multiplanarForceRender: true,
+          isResizeCanvas: true
+        });
+        nv.attachToCanvas(canvas);
+        update((state) => ({ ...state, instance: nv, errorMessage: '' }));
+      } catch (error) {
+        console.error('Failed to initialize Niivue:', error);
+        update((state) => ({
+          ...state,
+          instance: null,
+          isLoading: false,
+          isReady: false,
+          errorMessage: 'Error initializing the viewer. Please refresh.'
+        }));
+      }
     },
 
     // Clean up NiiVue instance
     destroyNiivue: () => {
-      update(state => {
+      update((state) => {
         if (state.instance && typeof (state.instance as any).destroy === 'function') {
           try {
             (state.instance as any).destroy();
           } catch (e) {
-            console.error("Error calling Niivue destroy method:", e);
+            console.error('Error calling Niivue destroy method:', e);
           }
         }
-        return { ...state, instance: null };
+        return { ...initialState, instance: null, isLoading: true, isReady: false }; // Reset to initial state but keep it loading
       });
     },
 
@@ -72,16 +75,17 @@ const createNiivueStore = () => {
     loadDefaultFile: async () => {
       const nv = getInstance();
       if (!nv) {
-        update(state => ({ 
-          ...state, 
-          errorMessage: "NiiVue viewer is not ready. Please wait or refresh." 
+        // This case should be rare if initialization is handled correctly
+        update((state) => ({
+          ...state,
+          errorMessage: 'NiiVue viewer is not ready. Please wait or refresh.'
         }));
         return;
       }
 
-      update(state => ({ 
-        ...state, 
-        isLoading: true, 
+      update((state) => ({
+        ...state,
+        isLoading: true,
         errorMessage: '',
         currentFile: 'sample_brain.nii.gz (sample)'
       }));
@@ -89,7 +93,6 @@ const createNiivueStore = () => {
       try {
         // Clear any existing volumes before loading the default file
         if (nv.volumes && nv.volumes.length > 0) {
-          // Remove all volumes by clearing the array
           while (nv.volumes.length > 0) {
             nv.removeVolumeByIndex(0);
           }
@@ -113,7 +116,7 @@ const createNiivueStore = () => {
             }
           } catch (e) {
             console.error("Error setting slice type:", e);
-            update(s => ({ ...s, errorMessage: "Failed to change view type." }));
+            update((s) => ({ ...s, errorMessage: "Failed to change view type." }));
           }
 
           // Apply colormap
@@ -124,20 +127,22 @@ const createNiivueStore = () => {
             }
           } catch (e) {
             console.error("Error applying colormap:", e);
-            update(s => ({ ...s, errorMessage: "Failed to apply colormap." }));
+            update((s) => ({ ...s, errorMessage: "Failed to apply colormap." }));
           }
         }
 
-        update(state => ({ ...state, isLoading: false }));
+        update((state) => ({ ...state, isLoading: false, isReady: true, errorMessage: '' })); // Now we are ready!
       } catch (error) {
         console.error('Error loading default file "sample_brain.nii.gz":', error);
-        update(state => ({ 
-          ...state, 
+        update((state) => ({
+          ...state,
           isLoading: false,
+          isReady: false,
           currentFile: null,
-          errorMessage: error instanceof Error 
-            ? `Failed to load default: ${error.message}. Check console.`
-            : 'An unexpected error occurred loading default. Check console.'
+          errorMessage:
+            error instanceof Error
+              ? `Failed to load default: ${error.message}. Check console.`
+              : 'An unexpected error occurred loading default. Check console.'
         }));
       }
     },
@@ -146,16 +151,16 @@ const createNiivueStore = () => {
     loadFromFile: async (file: File) => {
       const nv = getInstance();
       if (!nv) {
-        update(state => ({ 
-          ...state, 
-          errorMessage: "NiiVue viewer is not ready. Please wait or refresh." 
+        update((state) => ({
+          ...state,
+          errorMessage: 'NiiVue viewer is not ready. Please wait or refresh.'
         }));
         return;
       }
 
-      update(state => ({ 
-        ...state, 
-        isLoading: true, 
+      update((state) => ({
+        ...state,
+        isLoading: true,
         errorMessage: '',
         currentFile: file.name
       }));
@@ -163,7 +168,6 @@ const createNiivueStore = () => {
       try {
         // Clear any existing volumes before loading new file
         if (nv.volumes && nv.volumes.length > 0) {
-          // Remove all volumes by clearing the array
           while (nv.volumes.length > 0) {
             nv.removeVolumeByIndex(0);
           }
@@ -187,7 +191,7 @@ const createNiivueStore = () => {
             }
           } catch (e) {
             console.error("Error setting slice type:", e);
-            update(s => ({ ...s, errorMessage: "Failed to change view type." }));
+            update((s) => ({ ...s, errorMessage: "Failed to change view type." }));
           }
 
           // Apply colormap
@@ -198,27 +202,29 @@ const createNiivueStore = () => {
             }
           } catch (e) {
             console.error("Error applying colormap:", e);
-            update(s => ({ ...s, errorMessage: "Failed to apply colormap." }));
+            update((s) => ({ ...s, errorMessage: "Failed to apply colormap." }));
           }
         }
 
-        update(state => ({ ...state, isLoading: false }));
+        update((state) => ({ ...state, isLoading: false, isReady: true, errorMessage: '' }));
       } catch (error) {
         console.error(`Error loading file "${file.name}":`, error);
-        update(state => ({ 
-          ...state, 
+        update((state) => ({
+          ...state,
           isLoading: false,
+          isReady: true, // Still ready, even if file fails
           currentFile: null,
-          errorMessage: error instanceof Error 
-            ? `Failed to load: ${error.message}. Check console.`
-            : 'An unexpected error occurred. Check console.'
+          errorMessage:
+            error instanceof Error
+              ? `Failed to load: ${error.message}. Check console.`
+              : 'An unexpected error occurred. Check console.'
         }));
       }
     },
 
     // Update slice type
     setSliceType: (newType: number) => {
-      update(state => {
+      update((state) => {
         if (!state.instance) return state;
 
         try {
@@ -241,7 +247,7 @@ const createNiivueStore = () => {
 
     // Update colormap
     setColormap: (colormap: string) => {
-      update(state => {
+      update((state) => {
         if (!state.instance || !state.instance.volumes || state.instance.volumes.length === 0) {
           return { ...state, selectedColormap: colormap };
         }
@@ -251,7 +257,7 @@ const createNiivueStore = () => {
           state.instance.updateGLVolume();
           return { ...state, selectedColormap: colormap, errorMessage: '' };
         } catch (e) {
-          console.error("Error applying colormap:", e);
+          console.error("Error setting colormap:", e);
           return { ...state, errorMessage: "Failed to apply colormap." };
         }
       });
@@ -259,46 +265,59 @@ const createNiivueStore = () => {
 
     // Reset view to defaults
     resetView: () => {
-      update(state => {
+      update((state) => {
         if (!state.instance) return state;
 
         try {
           state.instance.setDefaults();
-          
+
           // Reset colormap if volume is loaded
           if (state.instance.volumes?.length > 0) {
             state.instance.volumes[0].colormap = 'inferno';
             state.instance.updateGLVolume();
           }
-          
+
           // Reset slice type
-          const multiplanarType = typeof (state.instance as any).sliceTypeMultiplanar === 'number'
-                              ? (state.instance as any).sliceTypeMultiplanar
-                              : 3;
+          const multiplanarType =
+            typeof (state.instance as any).sliceTypeMultiplanar === 'number'
+              ? (state.instance as any).sliceTypeMultiplanar
+              : 3;
           state.instance.setSliceType(multiplanarType);
-          
-          return { 
-            ...state, 
-            sliceType: 3, 
+
+          return {
+            ...state,
+            sliceType: 3,
             selectedColormap: 'inferno',
-            errorMessage: '' 
+            errorMessage: ''
           };
         } catch (e) {
-          console.error("Error calling nv.setDefaults():", e);
-          return { ...state, errorMessage: "Failed to reset view." };
+          console.error('Error calling nv.setDefaults():', e);
+          return { ...state, errorMessage: 'Failed to reset view.' };
         }
       });
     },
 
-    // Reset error state
-    clearError: () => {
-      update(state => ({ ...state, errorMessage: '' }));
+    // Reset to a clean state
+    reset: () => {
+      set(initialState);
     }
   };
 };
 
-// Export a singleton instance of the store
 export const niivueStore = createNiivueStore();
+
+// Derived store for just the controls, to prevent unnecessary re-renders of the canvas
+export const niivueControls = derived(
+  niivueStore,
+  ($niivueStore) => ({
+    isLoading: $niivueStore.isLoading,
+    isReady: $niivueStore.isReady,
+    errorMessage: $niivueStore.errorMessage,
+    currentFile: $niivueStore.currentFile,
+    sliceType: $niivueStore.sliceType,
+    selectedColormap: $niivueStore.selectedColormap
+  })
+);
 
 // Export available colormaps as a constant
 export const AVAILABLE_COLORMAPS = [

@@ -16,11 +16,11 @@
   <div class="w-full h-[65vh] min-h-[450px] border border-gray-700 rounded-lg overflow-hidden bg-black shadow-lg relative">
     <NiiVueCanvas />
     
-    {#if !$niivueStore.currentFile && !$niivueStore.isLoading && !$niivueStore.errorMessage && !$niivueStore.instance}
+    {#if !$niivueStore.isReady && !$niivueStore.errorMessage}
       <div class="absolute inset-0 flex items-center justify-center text-gray-600 pointer-events-none">
         <p class="bg-gray-900 bg-opacity-80 text-gray-300 px-4 py-2 rounded-md">Initializing Viewer...</p>
       </div>
-    {:else if !$niivueStore.currentFile && !$niivueStore.isLoading && !$niivueStore.errorMessage && $niivueStore.instance}
+    {:else if $niivueStore.isReady && !$niivueStore.currentFile && !$niivueStore.errorMessage}
       <div class="absolute inset-0 flex items-center justify-center text-gray-500 pointer-events-none">
         <p class="text-lg">Upload a file (.nii, .nii.gz, etc.) to begin</p>
       </div>
