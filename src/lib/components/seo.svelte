@@ -4,7 +4,7 @@
 	export let title: string = 'Axonia';
 	export let description: string =
 		'Axonia is a free, open-source tool for neuroimaging visualization.';
-	export let image: string = '/axonia-opengraph.png'; 
+	export let image: string = '/axonia-opengraph-2.png'; 
 	export let siteName: string = 'Axonia';
 	export let author: string | null = 'Kulaizki';
 	export let keywords: string = 'neuroimaging, brain visualization, NIfTI viewer, 3D brain rendering, medical imaging, open source, web-based, zero installation, neuro-informatics';
