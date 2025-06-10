@@ -18,7 +18,7 @@
         <a href="/visualizer" class="rounded-md bg-emerald-500 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-emerald-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-600">
           Launch Free Visualizer
         </a>
-        <a href="https://github.com/your-repo/axonia" target="_blank" rel="noopener noreferrer" class="text-sm font-semibold leading-6 text-white">
+        <a href="https://github.com/kulaizki/axonia" target="_blank" rel="noopener noreferrer" class="text-sm font-semibold leading-6 text-white">
           View on GitHub <span aria-hidden="true">→</span>
         </a>
       </div>
