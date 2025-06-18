@@ -3,7 +3,7 @@
   import FileUploader from '$lib/components/niivue/file-uploader.svelte';
   import ViewControls from '$lib/components/niivue/view-controls.svelte';
   import InteractionGuide from '$lib/components/niivue/interaction-guide.svelte';
-  import { niivueStore } from '$lib/stores/niivueStore';
+  import { niivueStore, derivedReady } from '$lib/stores/niivueStore';
   import type { Niivue } from '@niivue/niivue';
 </script>
 
@@ -16,13 +16,17 @@
   <div class="w-full h-[65vh] min-h-[450px] border border-gray-700 rounded-lg overflow-hidden bg-black shadow-lg relative">
     <NiiVueCanvas />
     
-    {#if !$niivueStore.isReady && !$niivueStore.errorMessage}
+    {#if $niivueStore.isLoading}
       <div class="absolute inset-0 flex items-center justify-center text-gray-600 pointer-events-none">
-        <p class="bg-gray-900 bg-opacity-80 text-gray-300 px-4 py-2 rounded-md">Initializing Viewer...</p>
+        <p class="bg-gray-900 bg-opacity-80 text-gray-300 px-4 py-2 rounded-md">Loading Viewer...</p>
       </div>
-    {:else if $niivueStore.isReady && !$niivueStore.currentFile && !$niivueStore.errorMessage}
+    {:else if !$derivedReady && !$niivueStore.currentFile}
       <div class="absolute inset-0 flex items-center justify-center text-gray-500 pointer-events-none">
         <p class="text-lg">Upload a file (.nii, .nii.gz, etc.) to begin</p>
+      </div>
+    {:else if $niivueStore.errorMessage}
+       <div class="absolute inset-0 flex items-center justify-center text-red-400 p-4 bg-gray-900 bg-opacity-80">
+        <p class="text-lg text-center">{$niivueStore.errorMessage}</p>
       </div>
     {/if}
   </div>
